@@ -1,0 +1,19 @@
+<html><head>
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+</head><body>
+<button id="start" style="position:fixed;z-index:9;top:40%;left:50%;transform:translate(-50%);padding:16px 32px;font-size:20px">開始</button>
+<a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: false" vr-mode-ui="enabled:false" device-orientation-permission-ui="enabled:false">
+  <a-assets><video id="vid" src="./video.mp4" loop playsinline webkit-playsinline crossorigin="anonymous"></video></a-assets>
+  <a-camera look-controls="enabled:false"></a-camera>
+  <a-entity mindar-image-target="targetIndex: 0">
+    <a-video src="#vid" width="1" height="1.33"></a-video>
+  </a-entity>
+</a-scene>
+<script>
+const v=document.querySelector('#vid'), s=document.querySelector('a-scene'), t=document.querySelector('[mindar-image-target]');
+document.querySelector('#start').onclick=e=>{e.target.remove(); v.play(); v.pause(); s.systems['mindar-image-system'].start();};
+t.addEventListener('targetFound',()=>v.play());
+t.addEventListener('targetLost',()=>v.pause());
+</script>
+</body></html>
